@@ -24,9 +24,10 @@ jobs:
           repository: NandhaKishorM/laya
           ref: ffc142012af63d015fa19f05f29f9c5ff329a2cc
           path: .upstream
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+      - name: Setup Python via uv
+        run: |
+          uv venv --python 3.12 .venv
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
       - run: python -m pip install -e '.[dev,reference,demo,serve,mcp,structured,llamaindex]'
       - run: ruff check . && ruff format --check .
       # Run timing-sensitive upstream host contracts before native model tests,
